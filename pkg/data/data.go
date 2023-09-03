@@ -53,40 +53,30 @@ func InsertNote(content string) {
 		log.Fatalln(err)
 	}
 
-	log.Println("Inserted asset successfully")
+	log.Println("asset inserted successfully")
 }
 
 func GetAll() []*Asset {
-	row, err := db.Query("SELECT * FROM assets ORDER BY created_at")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer row.Close()
-	assets := make([]*Asset, 0)
-
-	for row.Next() {
-		var id int
-		var content string
-		var category Category
-		var createdAt int
-		var modifiedAt int
-		row.Scan(&id, &content, &category, &createdAt, &modifiedAt)
-		//log.Println("[", lifecycle, "] ", content, "—", createdAt)
-		asset := &Asset{
-			Id:        id,
-			Category:  category,
-			Content:   content,
-			CreatedAt: createdAt,
-			UpdatedAt: modifiedAt,
-		}
-		assets = append(assets, asset)
-	}
-	return assets
+	query := "SELECT * FROM assets ORDER BY created_at"
+	return execute(query)
 }
 
-func GetBy(id *string) []*Asset {
-	row, err := db.Query(fmt.Sprintf("SELECT * FROM assets WHERE id = %s ORDER BY created_at", *id))
+func Update(id string, content string) []*Asset {
+	query := fmt.Sprintf("UPDATE assets SET content = \"%s\" WHERE id = %s", content, id)
+	return execute(query)
+}
+
+func GetBy(id *string) *Asset {
+	query := fmt.Sprintf("SELECT * FROM assets WHERE id = %s ORDER BY created_at", *id)
+	assets := execute(query)
+	if len(assets) == 0 {
+		return nil
+	}
+	return assets[0]
+}
+
+func execute(query string) []*Asset {
+	row, err := db.Query(query)
 	if err != nil {
 		log.Fatal(err)
 	}

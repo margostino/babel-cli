@@ -7,7 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "show",
 	Short: "See a list of all assets",
@@ -29,7 +28,8 @@ func show(id *string) {
 	assets := make([]*data.Asset, 0)
 
 	if id != nil {
-		assets = data.GetBy(id)
+		asset := data.GetBy(id)
+		assets = append(assets, asset)
 	} else {
 		assets = data.GetAll()
 	}

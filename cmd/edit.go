@@ -1,13 +1,16 @@
 package cmd
 
 import (
+	"github.com/margostino/babel-cli/pkg/common"
 	"github.com/margostino/babel-cli/pkg/data"
+	"github.com/margostino/babel-cli/pkg/editor"
+	"github.com/margostino/babel-cli/pkg/prompt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
-// listCmd represents the list command
 var editCmd = &cobra.Command{
-	Use:   "list",
+	Use:   "edit",
 	Short: "See a list of all notes you've added",
 	Long:  `See a list of all notes you've added`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -19,23 +22,27 @@ func init() {
 	rootCmd.AddCommand(editCmd)
 }
 
-func edit() *data.Asset {
-	//assets := data.GetAll()
+func edit() {
+	assets := data.GetAll()
 
-	//items = append(items, "Quit")
-	//for _, asset := range assets {
-	//	category := data.GetCategoryAsString(asset.Category)
-	//	item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, asset.Content)
-	//	items = append(items, item)
-	//	//fmt.Println(string(prompt.Cyan), asset.Content)
-	//}
-	//
-	//selectPrompt := prompt.Prompt{
-	//	"What asset you want to edit?",
-	//}
-	//
-	//choice := prompt.GetSelect(selectPrompt, items)
-	//
-	//println(choice)
-	return nil
+	items := []string{"Quit"}
+	items = append(items, prompt.AssetsToSelector(assets)...)
+
+	selector := prompt.Prompt{
+		"",
+	}
+
+	choice := prompt.GetSelect(selector, items)
+	if choice == 0 {
+		os.Exit(0)
+	}
+
+	item := items[choice]
+	prefix := common.NewString(item).Split(":").Get(0)
+	id := common.NewString(prefix).ReplaceAll("(", "").ReplaceAll(")", "").Value()
+
+	asset := data.GetBy(&id)
+
+	asset.Content = editor.Open(asset.Content)
+	data.Update(id, asset.Content)
 }

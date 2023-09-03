@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/margostino/babel-cli/pkg/data"
-	"github.com/margostino/babel-cli/pkg/prompt"
+	"github.com/margostino/babel-cli/pkg/editor"
 	"github.com/spf13/cobra"
 )
 
@@ -21,11 +20,6 @@ func init() {
 }
 
 func createNewAsset() {
-	input := prompt.Prompt{
-		"",
-	}
-	fmt.Printf("Start writing...\n\n")
-	content := prompt.GetInput(input)
-	println(content)
+	content := editor.Open("")
 	data.InsertNote(content)
 }
