@@ -5,3 +5,7 @@ tasks:
     cmds:
       - go build -v -o babel
       - cp babel $GOBIN
+
+  try_new:
+    cmds:
+      - go run . new
