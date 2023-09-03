@@ -6,7 +6,7 @@ package main
 
 import (
 	"github.com/margostino/babel-cli/cmd"
-	"github.com/margostino/babel-cli/data"
+	"github.com/margostino/babel-cli/pkg/data"
 	"log"
 )
 
