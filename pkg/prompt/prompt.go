@@ -69,14 +69,17 @@ func GetSelect(pc Prompt, items []string) int {
 	return index
 }
 
-func AssetsToSelector(assets []*data.Asset) []string {
+func AssetsToItems(assets []*data.Asset) []string {
 	items := make([]string, 0)
 	for _, asset := range assets {
 		category := data.GetCategoryAsString(asset.Category)
-		item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, asset.Content)
+		content := strings.ReplaceAll(asset.Content, "\n", " ")
+		if len(content) > 30 {
+			content = content[:20] + "..."
+		}
+		item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, content)
 		item = strings.ReplaceAll(item, "\n", "")
 		items = append(items, item)
-		//fmt.Println(string(prompt.Cyan), asset.Content)
 	}
 	return items
 }

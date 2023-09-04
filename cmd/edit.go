@@ -26,7 +26,7 @@ func edit() {
 	assets := data.GetAll()
 
 	items := []string{"Quit"}
-	items = append(items, prompt.AssetsToSelector(assets)...)
+	items = append(items, prompt.AssetsToItems(assets)...)
 
 	selector := prompt.Prompt{
 		"",

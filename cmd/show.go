@@ -39,9 +39,9 @@ func show(id *string) {
 		return
 	}
 
-	for _, asset := range assets {
-		category := data.GetCategoryAsString(asset.Category)
-		item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, asset.Content)
+	items := prompt.AssetsToItems(assets)
+
+	for _, item := range items {
 		fmt.Println(prompt.Cyan, item)
 	}
 }
