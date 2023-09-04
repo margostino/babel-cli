@@ -46,6 +46,15 @@ func CreateTable() {
 	log.Println("[assets] table created")
 }
 
+func DeleteAssets() {
+	deleteAssetsSQL := "DELETE FROM assets"
+
+	statement, err := db.Prepare(deleteAssetsSQL)
+	common.Check(err, "error preparing delete assets statement")
+	statement.Exec()
+	log.Println("[assets] table cleaned")
+}
+
 func InsertNote(content string) {
 	createdAt := time.Now().Unix()
 	insertNoteSQL := `INSERT INTO assets(content, category, created_at, modified_at) VALUES (?, ?, ?, ?)`

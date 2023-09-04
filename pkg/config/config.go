@@ -15,7 +15,7 @@ const (
 var AssetTempPath = GetAssetTempPath()
 var BabelHomePath = GetBabelHomePath()
 
-func InitBabelHome() {
+func InitHome() {
 	if _, err := os.Stat(BabelHomePath); os.IsNotExist(err) {
 		err = os.Mkdir(BabelHomePath, 0755)
 		common.Check(err, "error creating .babel folder")

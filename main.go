@@ -1,7 +1,3 @@
-/*
-Copyright © 2023 margostino (maj.dagostino@gmail.com)
-
-*/
 package main
 
 import (
@@ -11,7 +7,7 @@ import (
 )
 
 func main() {
-	config.InitBabelHome()
+	config.InitHome()
 	data.OpenDatabase()
 	cmd.Execute()
 }
