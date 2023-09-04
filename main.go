@@ -6,14 +6,12 @@ package main
 
 import (
 	"github.com/margostino/babel-cli/cmd"
+	"github.com/margostino/babel-cli/pkg/config"
 	"github.com/margostino/babel-cli/pkg/data"
-	"log"
 )
 
 func main() {
-	err := data.OpenDatabase()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	config.InitBabelHome()
+	data.OpenDatabase()
 	cmd.Execute()
 }

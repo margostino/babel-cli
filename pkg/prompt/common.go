@@ -8,6 +8,7 @@ const (
 	Purple = "\033[35m"
 	Cyan   = "\033[36m"
 	White  = "\033[37m"
+	Yellow = "\033[33m"
 )
 
 type Prompt struct {

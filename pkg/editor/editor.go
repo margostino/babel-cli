@@ -2,16 +2,16 @@ package editor
 
 import (
 	"github.com/margostino/babel-cli/pkg/common"
+	"github.com/margostino/babel-cli/pkg/config"
 	"os"
 	"os/exec"
 	"strings"
 )
 
-const TempFileName = "asset.temp"
-
 func Open(content string) string {
 	createTempFile(content)
-	cmd := exec.Command("vim", TempFileName)
+	//cmd := exec.Command("vim", TempFileName)
+	cmd := exec.Command("code", "-n", "-w", "-g", config.AssetTempPath)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
@@ -23,12 +23,12 @@ func Open(content string) string {
 
 func createTempFile(content string) {
 	bytes := []byte(content)
-	err := os.WriteFile(TempFileName, bytes, 0644)
+	err := os.WriteFile(config.AssetTempPath, bytes, 0644)
 	common.Check(err, "Failed to write to file")
 }
 
 func removeTempFile() {
-	cmd := exec.Command("rm", TempFileName)
+	cmd := exec.Command("rm", config.AssetTempPath)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
@@ -37,7 +37,7 @@ func removeTempFile() {
 
 func readTempFile() string {
 	// read text file and get text
-	bytes, err := os.ReadFile("asset.temp")
+	bytes, err := os.ReadFile(config.AssetTempPath)
 	common.Check(err, "Failed to read file")
 	content := string(bytes)
 	return strings.TrimSpace(content)

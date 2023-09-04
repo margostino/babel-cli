@@ -3,6 +3,9 @@ package data
 import (
 	"database/sql"
 	"fmt"
+	"github.com/margostino/babel-cli/pkg/common"
+	"github.com/margostino/babel-cli/pkg/config"
+	"github.com/mitchellh/go-homedir"
 	"log"
 	"time"
 
@@ -11,15 +14,18 @@ import (
 
 var db *sql.DB
 
-func OpenDatabase() error {
-	var err error
+func OpenDatabase() {
+	home, err := homedir.Dir()
+	common.Check(err, "error getting home directory")
 
-	db, err = sql.Open("sqlite3", "./sqlite.db")
-	if err != nil {
-		return err
+	dataSourceName := fmt.Sprintf("%s/%s/%s", home, config.BabelHome, "babel.db")
+	db, err = sql.Open("sqlite3", dataSourceName)
+	common.Check(err, "error opening database")
+
+	ping := db.Ping()
+	if ping != nil {
+		log.Fatal(ping.Error())
 	}
-
-	return db.Ping()
 }
 
 func CreateTable() {

@@ -83,5 +83,9 @@ func (s *StringSlice) Join(separator string) *String {
 }
 
 func (s *StringSlice) Get(index int) string {
+	// check if index is out of bounds
+	if index >= len(s.values) {
+		return ""
+	}
 	return s.values[index]
 }

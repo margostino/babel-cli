@@ -1,12 +1,23 @@
 package common
 
-import "log"
+import (
+	"fmt"
+	"log"
+	"os"
+)
 
 func Check(err error, message string) {
 	if err != nil {
-		log.Fatalf("Error: %s - %s\n", err.Error(), message)
+		fmt.Printf("Error: %s - %s\n", err.Error(), message)
+		os.Exit(1)
 	}
 }
+
+//func Check(err error, message string) {
+//	if err != nil {
+//		log.Fatalf("Error: %s - %s\n", err.Error(), message)
+//	}
+//}
 
 func SilentCheck(err error, message string) {
 	if err != nil {

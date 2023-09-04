@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/margostino/babel-cli/pkg/common"
 	"github.com/margostino/babel-cli/pkg/data"
 	"github.com/margostino/babel-cli/pkg/prompt"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 var listCmd = &cobra.Command{
@@ -42,6 +44,8 @@ func show(id *string) {
 	items := prompt.AssetsToItems(assets)
 
 	for _, item := range items {
-		fmt.Println(prompt.Cyan, item)
+		prefix := common.NewString(item).Split(" ").Get(0)
+		summary := strings.ReplaceAll(item, prefix, "")
+		fmt.Println(prompt.Yellow, prefix, prompt.Cyan, summary)
 	}
 }

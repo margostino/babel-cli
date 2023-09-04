@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/margostino/babel-cli/pkg/data"
 	"github.com/margostino/babel-cli/pkg/editor"
+	"github.com/margostino/babel-cli/pkg/prompt"
 	"github.com/spf13/cobra"
 )
 
@@ -21,5 +22,9 @@ func init() {
 
 func createNewAsset() {
 	content := editor.Open("")
+	if len(content) == 0 {
+		println(prompt.Red, "No content provided")
+		return
+	}
 	data.InsertNote(content)
 }
