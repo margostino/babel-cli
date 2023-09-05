@@ -7,6 +7,7 @@ TODO:
 - [x] Initialize database and home directory
 - [ ] Tag implementation
 - [ ] Sync with remote (Git)
+- [ ] BabelQL implementation
 - [ ] Workflow implementation: inbox -> project -> area -> resource -> archive
 - [ ] Share implementation
 - [ ] Bot implementation with LLM integration and quick assets (auto sync)
@@ -14,4 +15,4 @@ TODO:
   - By similarity
   - By tags
   - By parameters (name, category, etc.)
-- [ ] Graph model implementation (Graphlite)
+- [ ] Graph model implementation (Graphlite, BabelDB)
