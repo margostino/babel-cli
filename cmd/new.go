@@ -26,5 +26,5 @@ func createNewAsset() {
 		println(prompt.Red, "No content provided")
 		return
 	}
-	data.InsertNote(content)
+	data.Insert(content)
 }

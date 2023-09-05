@@ -7,6 +7,7 @@ import (
 	"github.com/margostino/babel-cli/pkg/config"
 	"github.com/mitchellh/go-homedir"
 	"log"
+	"strconv"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -55,7 +56,7 @@ func DeleteAssets() {
 	log.Println("[assets] table cleaned")
 }
 
-func InsertNote(content string) {
+func Insert(content string) {
 	createdAt := time.Now().Unix()
 	insertNoteSQL := `INSERT INTO assets(content, category, created_at, modified_at) VALUES (?, ?, ?, ?)`
 	statement, err := db.Prepare(insertNoteSQL)
@@ -76,13 +77,18 @@ func GetAll() []*Asset {
 	return execute(query)
 }
 
-func Update(id string, content string) []*Asset {
-	query := fmt.Sprintf("UPDATE assets SET content = \"%s\" WHERE id = %s", content, id)
+func Update(id int, content string) []*Asset {
+	query := fmt.Sprintf("UPDATE assets SET content = \"%s\" WHERE id = %d", content, id)
 	return execute(query)
 }
 
-func GetBy(id *string) *Asset {
-	query := fmt.Sprintf("SELECT * FROM assets WHERE id = %s ORDER BY created_at", *id)
+func Delete(id int) []*Asset {
+	query := fmt.Sprintf("DELETE FROM assets WHERE id = %d", id)
+	return execute(query)
+}
+
+func GetBy(id int) *Asset {
+	query := fmt.Sprintf("SELECT * FROM assets WHERE id = %d ORDER BY created_at", id)
 	assets := execute(query)
 	if len(assets) == 0 {
 		return nil
@@ -115,6 +121,20 @@ func execute(query string) []*Asset {
 			UpdatedAt: modifiedAt,
 		}
 		assets = append(assets, asset)
+	}
+	return assets
+}
+
+func GetAssetsBy(id *string) []*Asset {
+	assets := make([]*Asset, 0)
+
+	if id != nil {
+		idAsNumber, err := strconv.Atoi(*id)
+		common.Check(err, "Invalid id")
+		asset := GetBy(idAsNumber)
+		assets = append(assets, asset)
+	} else {
+		assets = GetAll()
 	}
 	return assets
 }

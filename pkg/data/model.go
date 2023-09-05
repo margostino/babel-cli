@@ -1,5 +1,10 @@
 package data
 
+import (
+	"github.com/margostino/babel-cli/pkg/common"
+	"strconv"
+)
+
 type Category int
 
 const (
@@ -36,4 +41,10 @@ func GetCategoryAsString(category Category) string {
 	default:
 		return "uncategorized"
 	}
+}
+
+func ToInt(value *string) int {
+	valueAsInt, err := strconv.Atoi(*value)
+	common.Check(err, "Invalid value to convert to int")
+	return valueAsInt
 }
