@@ -7,8 +7,8 @@ import (
 
 var dropCmd = &cobra.Command{
 	Use:   "drop",
-	Short: "Drop table from database",
-	Long:  `Drop table from database`,
+	Short: "Drop table",
+	Long:  `Drop table`,
 	Run: func(cmd *cobra.Command, args []string) {
 		data.DropTable()
 	},
