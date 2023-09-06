@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	BabelHome    = ".babel"
-	TempFileName = "asset.temp"
+	BabelHome         = ".babel"
+	TempFileName      = "asset.temp"
+	MaxSelectorLength = 30
 )
 
 var AssetTempPath = GetAssetTempPath()

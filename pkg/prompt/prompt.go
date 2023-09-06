@@ -3,6 +3,7 @@ package prompt
 import (
 	"fmt"
 	"github.com/manifoldco/promptui"
+	"github.com/margostino/babel-cli/pkg/config"
 	"github.com/margostino/babel-cli/pkg/data"
 	"os"
 	"strings"
@@ -74,8 +75,8 @@ func AssetsToItems(assets []*data.Asset) []string {
 	for _, asset := range assets {
 		category := data.GetCategoryAsString(asset.Category)
 		content := strings.ReplaceAll(asset.Content, "\n", " ")
-		if len(content) > 30 {
-			content = content[:20] + "..."
+		if len(content) > config.MaxSelectorLength {
+			content = content[:config.MaxSelectorLength] + "..."
 		}
 		item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, content)
 		item = strings.ReplaceAll(item, "\n", "")

@@ -56,6 +56,14 @@ func DeleteAssets() {
 	log.Println("[assets] table cleaned")
 }
 
+func DropTable() {
+	dropTableSQL := "DROP TABLE assets"
+	statement, err := db.Prepare(dropTableSQL)
+	common.Check(err, "error preparing drop assets statement")
+	statement.Exec()
+	log.Println("[assets] table dropped")
+}
+
 func Insert(content string) {
 	createdAt := time.Now().Unix()
 	insertNoteSQL := `INSERT INTO assets(content, category, created_at, modified_at) VALUES (?, ?, ?, ?)`
