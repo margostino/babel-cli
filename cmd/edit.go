@@ -23,7 +23,7 @@ func init() {
 
 func edit(id *string) {
 	asset := getAssetByIdOrSelection(id)
-	asset.Content = editor.Open(asset.Content)
+	asset.Content = editor.Open(id, asset.Content)
 	data.Update(asset.Id, asset.Content)
 	log.Printf("asset [%d] updated successfully", asset.Id)
 }

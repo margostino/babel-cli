@@ -5,3 +5,6 @@ go build -v -o babel
 Discover the path to the executable:
 go list -f '{{.Target}}'
 go env GOPATH
+
+
+task build

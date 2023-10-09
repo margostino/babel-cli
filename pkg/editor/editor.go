@@ -8,10 +8,17 @@ import (
 	"strings"
 )
 
-func Open(content string) string {
-	createTempFile(content)
+func Open(id *string, content string) string {
+	var fileName string
+	if id == nil {
+		fileName = config.AssetPath
+	} else {
+		fileName = config.GetAssetPathById(*id)
+	}
+	createFile(content)
+	dataPath := config.GetBabelDataPath()
 	//cmd := exec.Command("vim", TempFileName)
-	cmd := exec.Command("code", "-n", "-w", "-g", config.AssetTempPath)
+	cmd := exec.Command("code", "-n", "-w", "-g", fileName, "-a", dataPath)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
@@ -21,14 +28,14 @@ func Open(content string) string {
 	return updatedContent
 }
 
-func createTempFile(content string) {
+func createFile(content string) {
 	bytes := []byte(content)
-	err := os.WriteFile(config.AssetTempPath, bytes, 0644)
+	err := os.WriteFile(config.AssetPath, bytes, 0644)
 	common.Check(err, "Failed to write to file")
 }
 
 func removeTempFile() {
-	cmd := exec.Command("rm", config.AssetTempPath)
+	cmd := exec.Command("rm", config.AssetPath)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
@@ -37,7 +44,7 @@ func removeTempFile() {
 
 func readTempFile() string {
 	// read text file and get text
-	bytes, err := os.ReadFile(config.AssetTempPath)
+	bytes, err := os.ReadFile(config.AssetPath)
 	common.Check(err, "Failed to read file")
 	content := string(bytes)
 	return strings.TrimSpace(content)

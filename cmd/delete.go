@@ -22,6 +22,6 @@ func init() {
 
 func deleteAsset(id *string) {
 	asset := getAssetByIdOrSelection(id)
-	asset.Content = editor.Open(asset.Content)
+	asset.Content = editor.Open(nil, asset.Content)
 	data.Delete(asset.Id)
 }

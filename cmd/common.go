@@ -6,6 +6,7 @@ import (
 	"github.com/margostino/babel-cli/pkg/data"
 	"github.com/margostino/babel-cli/pkg/prompt"
 	"os"
+	"strings"
 )
 
 func extractParam(args []string, pos int) *string {
@@ -14,6 +15,14 @@ func extractParam(args []string, pos int) *string {
 		param = &args[pos]
 	}
 	return param
+}
+
+func concatAllParams(args []string) *string {
+	if len(args) == 0 {
+		return nil
+	}
+	joinedArgs := strings.TrimSpace(strings.Join(args[0:], "_"))
+	return &joinedArgs
 }
 
 func getAssetByIdOrSelection(id *string) *data.Asset {

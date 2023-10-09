@@ -12,7 +12,8 @@ var newCmd = &cobra.Command{
 	Short: "Creates a new asset",
 	Long:  `Creates a new Babel Asset (quick note, idea, knowledge, resource, etc.)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		createNewAsset()
+		id := concatAllParams(args)
+		createNewAsset(id)
 	},
 }
 
@@ -20,8 +21,8 @@ func init() {
 	rootCmd.AddCommand(newCmd)
 }
 
-func createNewAsset() {
-	content := editor.Open("")
+func createNewAsset(id *string) {
+	content := editor.Open(id, "")
 	if len(content) == 0 {
 		println(prompt.Red, "No content provided")
 		return
