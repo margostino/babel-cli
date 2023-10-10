@@ -1,12 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/margostino/babel-cli/pkg/common"
-	"github.com/margostino/babel-cli/pkg/data"
-	"github.com/margostino/babel-cli/pkg/prompt"
+	"github.com/margostino/babel-cli/pkg/editor"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 var listCmd = &cobra.Command{
@@ -24,18 +20,20 @@ func init() {
 }
 
 func show(id *string) {
-	assets := data.GetAssetsBy(id)
-
-	if len(assets) == 0 {
-		fmt.Println(prompt.Red, "No assets found")
-		return
-	}
-
-	items := prompt.AssetsToItems(assets)
-
-	for _, item := range items {
-		prefix := common.NewString(item).Split(" ").Get(0)
-		summary := strings.ReplaceAll(item, prefix, "")
-		fmt.Println(prompt.Yellow, prefix, prompt.Cyan, summary)
-	}
+	//assets := db.GetAssetsBy(id)
+	//
+	//if len(assets) == 0 {
+	//	fmt.Println(prompt.Red, "No assets found")
+	//	return
+	//}
+	//
+	//items := prompt.AssetsToItems(assets)
+	//
+	//for _, item := range items {
+	//	prefix := common.NewString(item).Split(" ").Get(0)
+	//	summary := strings.ReplaceAll(item, prefix, "")
+	//	fmt.Println(prompt.Yellow, prefix, prompt.Cyan, summary)
+	//}
+	asset := getAssetByIdOrSelection(id)
+	editor.OpenBy(id, asset.Content)
 }

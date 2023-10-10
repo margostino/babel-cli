@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/margostino/babel-cli/pkg/common"
-	"github.com/margostino/babel-cli/pkg/data"
+	"github.com/margostino/babel-cli/pkg/db"
 	"github.com/margostino/babel-cli/pkg/prompt"
 	"os"
 	"strings"
@@ -25,9 +25,9 @@ func concatAllParams(args []string) *string {
 	return &joinedArgs
 }
 
-func getAssetByIdOrSelection(id *string) *data.Asset {
-	var asset *data.Asset
-	assets := data.GetAssetsBy(id)
+func getAssetByIdOrSelection(id *string) *db.Asset {
+	var asset *db.Asset
+	assets := db.GetAssetsBy(id)
 
 	if len(assets) == 0 {
 		fmt.Println(prompt.Red, "No assets found")
@@ -53,8 +53,8 @@ func getAssetByIdOrSelection(id *string) *data.Asset {
 		item := items[choice]
 		prefix := common.NewString(item).Split(":").Get(0)
 		selectedId := common.NewString(prefix).ReplaceAll("(", "").ReplaceAll(")", "").Value()
-		idAsInt := data.ToInt(&selectedId)
-		asset = data.GetBy(idAsInt)
+		idAsInt := db.ToInt(&selectedId)
+		asset = db.GetBy(idAsInt)
 	}
 	return asset
 }

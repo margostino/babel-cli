@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/margostino/babel-cli/pkg/data"
+	"github.com/margostino/babel-cli/pkg/db"
 	"github.com/spf13/cobra"
 )
 
@@ -10,7 +10,7 @@ var cleanCmd = &cobra.Command{
 	Short: "Remove all assets",
 	Long:  `Remove all assets in database`,
 	Run: func(cmd *cobra.Command, args []string) {
-		data.DeleteAssets()
+		db.DeleteAssets()
 	},
 }
 

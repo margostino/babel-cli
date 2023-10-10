@@ -8,30 +8,47 @@ import (
 	"strings"
 )
 
-func Open(id *string, content string) string {
-	var fileName string
+func OpenBy(id *string, content string) string {
+	var assetName string
 	if id == nil {
-		fileName = config.AssetPath
+		assetName = config.AssetPath
 	} else {
-		fileName = config.GetAssetPathById(*id)
+		assetName = config.GetAssetPathById(*id)
 	}
-	createFile(content)
-	dataPath := config.GetBabelDataPath()
-	//cmd := exec.Command("vim", TempFileName)
-	cmd := exec.Command("code", "-n", "-w", "-g", fileName, "-a", dataPath)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	err := cmd.Run()
-	common.Check(err, "Failed to run vim")
+	if !fileExits(assetName) {
+		createFile(assetName, content)
+	}
+	Open(&assetName)
 	updatedContent := readTempFile()
 	removeTempFile()
 	return updatedContent
 }
 
-func createFile(content string) {
+func Open(assetName *string) {
+	var cmd *exec.Cmd
+	dataPath := config.GetBabelDataPath()
+
+	if assetName == nil {
+		cmd = exec.Command("code", "-n", "-a", dataPath)
+	} else {
+		cmd = exec.Command("code", "-n", "-w", "-g", *assetName, "-a", dataPath)
+	}
+
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	err := cmd.Run()
+	common.Check(err, "Failed to run vim")
+}
+
+func createFile(fileName string, content string) {
 	bytes := []byte(content)
-	err := os.WriteFile(config.AssetPath, bytes, 0644)
+	err := os.WriteFile(fileName, bytes, 0644)
 	common.Check(err, "Failed to write to file")
+}
+
+func fileExits(fileName string) bool {
+	_, err := os.Stat(fileName)
+	return !os.IsNotExist(err)
 }
 
 func removeTempFile() {

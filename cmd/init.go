@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/margostino/babel-cli/pkg/data"
+	"github.com/margostino/babel-cli/pkg/db"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +11,7 @@ var initCmd = &cobra.Command{
 	Short: "Initialise a new database",
 	Long:  `Initialise a new database`,
 	Run: func(cmd *cobra.Command, args []string) {
-		data.CreateTable()
+		db.CreateTable()
 	},
 }
 

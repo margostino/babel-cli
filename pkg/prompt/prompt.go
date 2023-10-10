@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/manifoldco/promptui"
 	"github.com/margostino/babel-cli/pkg/config"
-	"github.com/margostino/babel-cli/pkg/data"
+	"github.com/margostino/babel-cli/pkg/db"
 	"os"
 	"strings"
 )
@@ -70,10 +70,10 @@ func GetSelect(pc Prompt, items []string) int {
 	return index
 }
 
-func AssetsToItems(assets []*data.Asset) []string {
+func AssetsToItems(assets []*db.Asset) []string {
 	items := make([]string, 0)
 	for _, asset := range assets {
-		category := data.GetCategoryAsString(asset.Category)
+		category := db.GetCategoryAsString(asset.Category)
 		content := strings.ReplaceAll(asset.Content, "\n", " ")
 		if len(content) > config.MaxSelectorLength {
 			content = content[:config.MaxSelectorLength] + "..."

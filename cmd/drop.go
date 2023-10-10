@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/margostino/babel-cli/pkg/data"
+	"github.com/margostino/babel-cli/pkg/db"
 	"github.com/spf13/cobra"
 )
 
@@ -10,7 +10,7 @@ var dropCmd = &cobra.Command{
 	Short: "Drop table",
 	Long:  `Drop table`,
 	Run: func(cmd *cobra.Command, args []string) {
-		data.DropTable()
+		db.DropTable()
 	},
 }
 

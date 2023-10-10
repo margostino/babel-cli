@@ -1,4 +1,4 @@
-package data
+package db
 
 import (
 	"database/sql"
@@ -7,6 +7,7 @@ import (
 	"github.com/margostino/babel-cli/pkg/config"
 	"github.com/mitchellh/go-homedir"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -90,9 +91,18 @@ func Update(id int, content string) []*Asset {
 	return execute(query)
 }
 
-func Delete(id int) []*Asset {
-	query := fmt.Sprintf("DELETE FROM assets WHERE id = %d", id)
-	return execute(query)
+func Delete(id string) {
+	fileName := config.GetAssetPathById(id)
+	err := os.Remove(fileName)
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("File deleted successfully!")
+	}
+
+	//query := fmt.Sprintf("DELETE FROM assets WHERE id = %d", id)
+	//return execute(query)
 }
 
 func GetBy(id int) *Asset {
