@@ -6,7 +6,7 @@ import (
 )
 
 var openCmd = &cobra.Command{
-	Use:   "open",
+	Use:   "open-babel",
 	Short: "Open editor",
 	Long:  `Open a new editor with Babel Workspace`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -11,7 +11,7 @@ const (
 	BabelHome         = ".babel"
 	AssetFileName     = "asset.babel"
 	MaxSelectorLength = 30
-	BabelDatabase     = "babel-data"
+	BabelDatabase     = "db"
 )
 
 var AssetPath = GetAssetPath()
