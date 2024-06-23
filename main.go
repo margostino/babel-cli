@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/margostino/babel-cli/cmd"
-	"github.com/margostino/babel-cli/pkg/config"
+	"github.com/margostino/babel-cli/internal/config"
 )
 
 func main() {

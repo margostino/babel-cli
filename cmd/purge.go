@@ -5,15 +5,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var dropCmd = &cobra.Command{
-	Use:   "drop",
-	Short: "Drop table",
-	Long:  `Drop table`,
+var purgeCmd = &cobra.Command{
+	Use:   "purge",
+	Short: "Remove all assets",
+	Long:  `Remove all assets in database`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db.DropTable()
+		db.DeleteAssets()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(dropCmd)
+	rootCmd.AddCommand(purgeCmd)
 }

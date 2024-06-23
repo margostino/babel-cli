@@ -1,8 +1,9 @@
 package db
 
 import (
-	"github.com/margostino/babel-cli/pkg/common"
 	"strconv"
+
+	"github.com/margostino/babel-cli/internal/common"
 )
 
 type Category int

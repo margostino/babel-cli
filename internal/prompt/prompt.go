@@ -2,11 +2,12 @@ package prompt
 
 import (
 	"fmt"
-	"github.com/manifoldco/promptui"
-	"github.com/margostino/babel-cli/pkg/config"
-	"github.com/margostino/babel-cli/pkg/db"
 	"os"
 	"strings"
+
+	"github.com/manifoldco/promptui"
+	"github.com/margostino/babel-cli/internal/config"
+	"github.com/margostino/babel-cli/internal/db"
 )
 
 func GetInput(pc Prompt) string {

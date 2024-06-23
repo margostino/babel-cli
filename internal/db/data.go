@@ -3,13 +3,14 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"github.com/margostino/babel-cli/pkg/common"
-	"github.com/margostino/babel-cli/pkg/config"
-	"github.com/mitchellh/go-homedir"
 	"log"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/margostino/babel-cli/internal/common"
+	"github.com/margostino/babel-cli/internal/config"
+	"github.com/mitchellh/go-homedir"
 
 	_ "github.com/mattn/go-sqlite3"
 )

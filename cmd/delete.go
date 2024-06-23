@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/margostino/babel-cli/pkg/db"
+	"github.com/margostino/babel-cli/internal/db"
 	"github.com/spf13/cobra"
 )
 

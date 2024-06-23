@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/margostino/babel-cli/pkg/common"
-	"github.com/margostino/babel-cli/pkg/db"
-	"github.com/margostino/babel-cli/pkg/prompt"
 	"os"
 	"strings"
+
+	"github.com/margostino/babel-cli/internal/common"
+	"github.com/margostino/babel-cli/internal/db"
+	"github.com/margostino/babel-cli/internal/prompt"
 )
 
 func extractParam(args []string, pos int) *string {

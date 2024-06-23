@@ -1,14 +1,15 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -46,7 +47,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.babel.yml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.babel/babel.toml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -65,9 +66,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".babel" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".babel")
+		configPath := filepath.Join(home, ".babel")
+		viper.AddConfigPath(configPath)
+		viper.SetConfigName("babel")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

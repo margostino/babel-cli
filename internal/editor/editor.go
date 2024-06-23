@@ -1,11 +1,12 @@
 package editor
 
 import (
-	"github.com/margostino/babel-cli/pkg/common"
-	"github.com/margostino/babel-cli/pkg/config"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/margostino/babel-cli/internal/common"
+	"github.com/margostino/babel-cli/internal/config"
 )
 
 func OpenBy(id *string, content string) string {

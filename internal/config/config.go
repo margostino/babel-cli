@@ -2,9 +2,10 @@ package config
 
 import (
 	"fmt"
-	"github.com/margostino/babel-cli/pkg/common"
-	"github.com/mitchellh/go-homedir"
 	"os"
+
+	"github.com/margostino/babel-cli/internal/common"
+	"github.com/mitchellh/go-homedir"
 )
 
 const (

@@ -89,3 +89,8 @@ func (s *StringSlice) Get(index int) string {
 	}
 	return s.values[index]
 }
+
+func (s *String) TrimSpace() *String {
+	s.value = strings.TrimSpace(s.value)
+	return s
+}
