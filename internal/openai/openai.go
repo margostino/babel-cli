@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 
 	"gopkg.in/yaml.v2"
 
 	"github.com/margostino/babel-cli/internal/common"
+	"github.com/margostino/babel-cli/prompts"
 )
 
 var BASE_URL = "https://api.openai.com/v1"
@@ -51,9 +51,11 @@ type ApiResponse struct {
 }
 
 func getPrompt() (string, error) {
-	content, err := os.ReadFile(PROMPT_FILE_PATH)
-	common.Check(err, "Failed to read metadata file")
+	file, err := prompts.GetEmbeddedPrompt().Open("metadata_enricher.yml")
+	defer file.Close()
 
+	content, err := io.ReadAll(file)
+	common.Check(err, "Failed to read embedded prompt file")
 	var data map[string]interface{}
 	err = yaml.Unmarshal(content, &data)
 	common.Check(err, "Failed to unmarshal metadata file")

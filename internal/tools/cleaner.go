@@ -53,7 +53,7 @@ func normalizeFileName(name string) string {
 
 func CleanAssets(path string) {
 	log.Println("Running AssetsCleaner tool...")
-	skipNames := []string{".git", "0-description", "0-babel", "metadata_index"}
+	skipNames := []string{".git", "0-description", "0-babel", "metadata_index", "metadata"}
 	skipNamesMap := utils.ListToMap(skipNames)
 
 	if err := walkAndNormalizeFiles(path, skipNamesMap); err != nil {
