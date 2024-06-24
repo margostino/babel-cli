@@ -26,15 +26,21 @@ type Index struct {
 }
 
 func writeIndexFile(root string) {
+	indexData := make(map[string]map[string]interface{})
 	indexFilePath := filepath.Join(root, "metadata", "index.json")
-	indexFile, err := os.Create(indexFilePath)
-	if err != nil {
-		log.Printf("Error creating index file %s: %v\n", indexFilePath, err)
+	indexFileContent, err := os.ReadFile(indexFilePath)
+	if err != nil && !os.IsNotExist(err) {
+		log.Printf("Failed to read index file: %v\n", err)
 		return
 	}
-	defer indexFile.Close()
 
-	indexData := make(map[string]map[string]interface{})
+	if len(indexFileContent) > 0 {
+		err = json.Unmarshal(indexFileContent, &indexData)
+		if err != nil {
+			log.Printf("Failed to unmarshal index file: %v\n", err)
+			return
+		}
+	}
 
 	metadataCollection.Range(func(key, value interface{}) bool {
 		relativePath := key.(string)
@@ -60,15 +66,25 @@ func writeIndexFile(root string) {
 		return true
 	})
 
-	indexJSON, err := json.MarshalIndent(indexData, "", "  ")
-	if err != nil {
-		log.Printf("Error marshaling index data to JSON: %v\n", err)
-		return
-	}
-	_, err = indexFile.Write(indexJSON)
-	if err != nil {
-		log.Printf("Error writing JSON to index file %s: %v\n", indexFilePath, err)
-		return
+	if len(indexData) > 0 {
+		indexFile, err := os.Create(indexFilePath)
+		common.Check(err, "Failed to create index file")
+		defer indexFile.Close()
+
+		log.Printf("Writing index data to file %s\n", indexFilePath)
+
+		indexJSON, err := json.MarshalIndent(indexData, "", "  ")
+		if err != nil {
+			log.Printf("Failed to marshal index data to JSON: %v\n", err)
+			return
+		}
+
+		err = os.WriteFile(indexFilePath, indexJSON, 0644)
+		if err != nil {
+			log.Printf("Failed to write JSON to index file %s: %v\n", indexFilePath, err)
+		}
+	} else {
+		log.Printf("No data to write to index file %s\n", indexFilePath)
 	}
 }
 
@@ -93,12 +109,10 @@ func getRelativePath(absolutePath string) (string, error) {
 }
 
 func writePrettyJSONToFile(jsonString, filePath string) {
-	// Unmarshal the JSON string into a map
 	var data map[string]interface{}
 	err := json.Unmarshal([]byte(jsonString), &data)
 	common.Check(err, "Failed to unmarshal JSON")
 
-	// Marshal the map into a pretty-formatted JSON string
 	prettyJSON, err := json.MarshalIndent(data, "", "  ")
 	common.Check(err, "Failed to marshal JSON")
 
@@ -106,7 +120,6 @@ func writePrettyJSONToFile(jsonString, filePath string) {
 	err = os.MkdirAll(dir, 0755)
 	common.Check(err, "Failed to create directory")
 
-	// err = os.WriteFile(fmt.Sprintf("%s.json", filePath), prettyJSON, 0644)
 	err = os.WriteFile(filePath, prettyJSON, 0644)
 	common.Check(err, "Failed to write JSON to file")
 }
@@ -118,6 +131,7 @@ func initMetadata(root string, relativeFilePath string, skipNamesMap map[string]
 	content, err := os.ReadFile(absoluteFilePath)
 	common.Check(err, "Failed to read file content")
 
+	log.Printf("Getting metadata for file %s\n", relativeFilePath)
 	metadata, err := openai.GetChatCompletionForMetadata(openAiAPIKey, relativeFilePath, string(content))
 	if err != nil {
 		log.Printf("Error getting metadata for file %s: %v\n", relativeFilePath, err)
@@ -129,6 +143,7 @@ func initMetadata(root string, relativeFilePath string, skipNamesMap map[string]
 	common.Check(err, "Failed to unmarshal metadata JSON")
 	metadataCollection.Store(relativeFilePath, metadataMap)
 	writePrettyJSONToFile(metadata, absoluteMetadataFilePath)
+	log.Printf("Metadata written for file %s\n", absoluteMetadataFilePath)
 }
 
 func syncMetadata(root string, relativeFilePath string, skipNamesMap map[string]struct{}, openAiAPIKey string, wg *sync.WaitGroup) {
@@ -138,7 +153,6 @@ func syncMetadata(root string, relativeFilePath string, skipNamesMap map[string]
 	} else {
 		wg.Done()
 	}
-
 }
 
 func walkAndEnrichMetadata(root string, skipNamesMap map[string]struct{}, openAiAPIKey string, fn func(root string, relativeFilePath string, skipNamesMap map[string]struct{}, openAiAPIKey string, wg *sync.WaitGroup)) error {
@@ -173,11 +187,14 @@ func walkAndEnrichMetadata(root string, skipNamesMap map[string]struct{}, openAi
 
 	wg.Wait()
 	writeIndexFile(root)
+
+	log.Println("Done!")
+
 	return err
 }
 
 func EnrichMetadata(repositoryPath string, openAiAPIKey string) {
-	log.Println(fmt.Sprintf("Running MetadataEnrichment tool in bulk..."))
+	log.Println(fmt.Sprintf("Initializing metadata..."))
 	skipNames := []string{".git", "metadata", "0-description", "0-babel", "metadata_index"}
 	skipNamesMap := utils.ListToMap(skipNames)
 
@@ -187,7 +204,7 @@ func EnrichMetadata(repositoryPath string, openAiAPIKey string) {
 }
 
 func SyncMetadata(repositoryPath string, openAiAPIKey string) {
-	log.Println(fmt.Sprintf("Running MetadataSync tool in bulk..."))
+	log.Println(fmt.Sprintf("Syncing metadata..."))
 	skipNames := []string{".git", "metadata", "0-description", "0-babel", "metadata_index"}
 	skipNamesMap := utils.ListToMap(skipNames)
 

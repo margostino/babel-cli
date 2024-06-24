@@ -11,4 +11,4 @@ mkdir -p ./bin
 go build -v -o ./bin/babel
 cp ./bin/babel $GOBIN
 
-echo "Build completed successfully. The binary is located at ./bin/babel-agent"
+echo "Build completed successfully. The binary is located at ./bin/babel-cli"
