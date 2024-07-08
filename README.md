@@ -1,6 +1,24 @@
-# babel-cli
+# 🛠️ Babel CLI
 
-TODO:
+(This project is under Babel Foundation project. You can read the manifest [here](https://github.com/margostino/babel-foundation))
+
+A command-line interface for performing specific tasks such as manual indexing, searching, and other operations on Babel data.
+
+## Features
+
+- **Manual Indexing**: Index your data manually from the command line.
+- **Search**: Perform searches on indexed data.
+- **Task Automation**: Automate various tasks related to Babel data management.
+
+## Commands
+
+### Indexing
+
+```bash
+babel-cli index [options]
+```
+
+### TODO
 
 - [x] CRUD commands (basic)
 - [x] Store assets in SQLite
