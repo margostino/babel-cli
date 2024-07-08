@@ -4,6 +4,10 @@
 
 A command-line interface for performing specific tasks such as manual indexing, searching, and other operations on Babel data.
 
+<p align="center">
+  <img src="https://github.com/margostino/babel-foundation/blob/master/assets/babel-architecture.png?raw=true" alt="Babel Foundation Architecture"/>
+</p>
+
 ## Features
 
 - **Manual Indexing**: Index your data manually from the command line.
