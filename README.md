@@ -1,6 +1,6 @@
 # 🛠️ Babel CLI
 
-(This project is under Babel Foundation project. You can read the manifest [here](https://github.com/margostino/babel-foundation))
+(This project is under Babel Foundation initiative. You can read the manifest [here](https://github.com/margostino/babel-foundation))
 
 A command-line interface for performing specific tasks such as manual indexing, searching, and other operations on Babel data.
 
