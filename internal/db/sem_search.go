@@ -12,7 +12,7 @@ import (
 func SemSearch(dbClient *weaviate.Client, query string, limit int) ([]*SemanticSearchResult, []*models.GraphQLError) {
 	nearTextConceptWithDistance := dbClient.GraphQL().
 		NearTextArgBuilder().
-		WithConcepts([]string{"query"}).
+		WithConcepts([]string{query}).
 		WithDistance(0.95)
 
 	result, err := dbClient.GraphQL().

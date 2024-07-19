@@ -12,7 +12,7 @@ import (
 func GenSearch(dbClient *weaviate.Client, query string, prompt string, limit int) ([]*GenerativeSearchResult, []*models.GraphQLError) {
 	nearTextConceptWithDistance := dbClient.GraphQL().
 		NearTextArgBuilder().
-		WithConcepts([]string{"query"}).
+		WithConcepts([]string{query}).
 		WithDistance(0.95)
 
 	generativeSearchPrompt := graphql.NewGenerativeSearch().SingleResult(prompt)

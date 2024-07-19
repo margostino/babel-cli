@@ -2,7 +2,7 @@
 
 (This project is under Babel Foundation initiative. You can read the manifest [here](https://github.com/margostino/babel-foundation))
 
-A command-line interface for performing specific tasks such as manual indexing, searching, and other operations on Babel data.
+`babel-cli` is a command-line tool for searching and indexing and syncing Babel assets. It supports semantic and generative search powered by [Weaviate Vector DB](https://weaviate.io/).
 
 <p align="center">
   <img src="https://github.com/margostino/babel-foundation/blob/master/assets/babel-architecture.png?raw=true" alt="Babel Foundation Architecture"/>
@@ -10,31 +10,56 @@ A command-line interface for performing specific tasks such as manual indexing, 
 
 ## Features
 
-- **Manual Indexing**: Index your data manually from the command line.
-- **Search**: Perform searches on indexed data.
-- **Task Automation**: Automate various tasks related to Babel data management.
+- **Index**: Index babel assets.
+- **Sync**: Sync metadata. Walk through Babel assets and sync metadata.
+- **Search**: [Semantic](https://weaviate.io/developers/academy/py/starter_text_data/text_searches/semantic) and [Generative](https://weaviate.io/developers/weaviate/modules/reader-generator-modules/generative-openai) Search.
 
 ## Commands
 
-### Indexing
+### Index
 
 ```bash
-babel-cli index [options]
+babel-cli metadata init
 ```
+
+### Sync
+
+```bash
+babel-cli metadata sync
+```
+
+### Semantic Search
+
+```bash
+babel-cli sem-search --limit 1 --query "vacation plan"
+```
+
+![semantic search example](./assets/sem-search-example.png "Semantic Search")
+
+### Generative Search
+
+```bash
+babel-cli gen-search --limit 1 --query "vacation plan" --prompt "write a short story max 20 words about {summary}"
+```
+
+![semantic search example](./assets/gen-search-example.png "Generative Search")
 
 ### TODO
 
-- [x] CRUD commands (basic)
-- [x] Store assets in SQLite
+- [x] Vector DB (weaviate) integration
 - [x] Initialize database and home directory
+- [x] Initialize metadata
+- [x] Sync metadata
+- [x] Stats reporting
+- [ ] CRUD commands (basic)
 - [ ] Tag implementation
 - [ ] Sync with remote (Git)
-- [ ] BabelQL implementation
+- [ ] BabelQL implementation?
 - [ ] Workflow implementation: inbox -> project -> area -> resource -> archive
 - [ ] Share implementation
-- [ ] Bot implementation with LLM integration and quick assets (auto sync)
+- [ ] Knowledge graph generation
 - [ ] Search implementation (local and remote)
   - By similarity
   - By tags
   - By parameters (name, category, etc.)
-- [ ] Graph model implementation (Graphlite, BabelDB)
+- [ ] Testing Testing Testing
