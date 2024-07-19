@@ -7,6 +7,5 @@ import (
 
 func main() {
 	config.InitHome()
-	//db.OpenDatabase()
 	cmd.Execute()
 }

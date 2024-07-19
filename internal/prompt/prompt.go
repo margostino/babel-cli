@@ -6,8 +6,6 @@ import (
 	"strings"
 
 	"github.com/manifoldco/promptui"
-	"github.com/margostino/babel-cli/internal/config"
-	"github.com/margostino/babel-cli/internal/db"
 )
 
 func GetInput(pc Prompt) string {
@@ -71,17 +69,17 @@ func GetSelect(pc Prompt, items []string) int {
 	return index
 }
 
-func AssetsToItems(assets []*db.Asset) []string {
-	items := make([]string, 0)
-	for _, asset := range assets {
-		category := db.GetCategoryAsString(asset.Category)
-		content := strings.ReplaceAll(asset.Content, "\n", " ")
-		if len(content) > config.MaxSelectorLength {
-			content = content[:config.MaxSelectorLength] + "..."
-		}
-		item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, content)
-		item = strings.ReplaceAll(item, "\n", "")
-		items = append(items, item)
-	}
-	return items
-}
+// func AssetsToItems(assets []*db.Asset) []string {
+// 	items := make([]string, 0)
+// 	// for _, asset := range assets {
+// 	// 	category := db.GetCategoryAsString(asset.Category)
+// 	// 	content := strings.ReplaceAll(asset.Content, "\n", " ")
+// 	// 	if len(content) > config.MaxSelectorLength {
+// 	// 		content = content[:config.MaxSelectorLength] + "..."
+// 	// 	}
+// 	// 	item := fmt.Sprintf("(%d:%s) %s", asset.Id, category, content)
+// 	// 	item = strings.ReplaceAll(item, "\n", "")
+// 	// 	items = append(items, item)
+// 	// }
+// 	return items
+// }

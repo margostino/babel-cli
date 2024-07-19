@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"log"
+	"fmt"
 
-	"github.com/margostino/babel-cli/internal/editor"
 	"github.com/spf13/cobra"
 )
 
@@ -12,8 +11,9 @@ var editCmd = &cobra.Command{
 	Short: "See a list of all notes you've added",
 	Long:  `See a list of all notes you've added`,
 	Run: func(cmd *cobra.Command, args []string) {
-		id := extractParam(args, 0)
-		edit(id)
+		// id := extractParam(args, 0)
+		// edit(id)
+		fmt.Println("not implemented")
 	},
 }
 
@@ -22,8 +22,8 @@ func init() {
 }
 
 func edit(id *string) {
-	asset := getAssetByIdOrSelection(id)
-	asset.Content = editor.OpenBy(id, asset.Content)
-	//data.Update(asset.Id, asset.Content)
-	log.Printf("asset [%d] updated successfully", asset.Id)
+	// asset := getAssetByIdOrSelection(id)
+	// asset.Content = editor.OpenBy(id, asset.Content)
+	// //data.Update(asset.Id, asset.Content)
+	// log.Printf("asset [%d] updated successfully", asset.Id)
 }

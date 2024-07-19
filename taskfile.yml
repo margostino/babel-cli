@@ -9,3 +9,17 @@ tasks:
   try_new:
     cmds:
       - go run . new
+
+  start-weaviate:
+    cmds:
+      - bash ./scripts/start-weaviate.sh
+    env:
+      OPENAI_API_KEY: "{{.OPENAI_API_KEY}}"
+  
+  stop-weaviate:
+    cmds:
+      - bash ./scripts/stop-weaviate.sh
+  
+  stop-remove-weaviate:
+    cmds:
+      - bash ./scripts/stop-remove-weaviate.sh

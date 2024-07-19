@@ -3,15 +3,21 @@ package cmd
 import (
 	"github.com/margostino/babel-cli/internal/db"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-// initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialise a new database",
-	Long:  `Initialise a new database`,
+	Short: "Initialise a new vector collection",
+	Long:  `Initialise a new vector collection`,
 	Run: func(cmd *cobra.Command, args []string) {
-		db.CreateTable()
+		repositoryPath := viper.GetString("repository.path")
+		openAiApiKey := viper.GetString("openai.apiKey")
+		dbClient := db.NewDBClient(openAiApiKey)
+		err := db.Init(dbClient, repositoryPath)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 

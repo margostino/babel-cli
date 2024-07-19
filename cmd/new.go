@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/margostino/babel-cli/internal/editor"
 	"github.com/margostino/babel-cli/internal/prompt"
 	"github.com/spf13/cobra"
@@ -11,8 +13,9 @@ var newCmd = &cobra.Command{
 	Short: "Creates a new asset",
 	Long:  `Creates a new Babel Asset (quick note, idea, knowledge, resource, etc.)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		id := concatAllParams(args)
-		createNewAsset(id)
+		// id := concatAllParams(args)
+		// createNewAsset(id)
+		fmt.Println("not implemented")
 	},
 }
 
