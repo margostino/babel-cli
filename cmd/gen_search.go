@@ -11,16 +11,21 @@ import (
 
 var genLimit int
 var genPrompt string
+var genQuery string
 
 var genSearchCmd = &cobra.Command{
 	Use:   "gen-search",
 	Short: "Generative Search",
 	Long:  `Generative Search`,
 	Run: func(cmd *cobra.Command, args []string) {
-		query := extractParam(args, 0)
+		// query := extractParam(args, 0)
+		if genQuery == "" {
+			fmt.Println("Please provide a query!")
+			return
+		}
 		openAiApiKey := viper.GetString("openai.apiKey")
 		dbClient := db.NewDBClient(openAiApiKey)
-		results, errs := db.GenSearch(dbClient, *query, genPrompt, genLimit)
+		results, errs := db.GenSearch(dbClient, genQuery, genPrompt, genLimit)
 		if errs != nil {
 			jsonErrors, err := json.Marshal(errs)
 			if err != nil {
@@ -29,13 +34,19 @@ var genSearchCmd = &cobra.Command{
 			panic(string(jsonErrors))
 		}
 		for _, result := range results {
-			fmt.Printf("Single Result: %s\n", result.SingleResult)
+			if result.SingleResult != "" {
+				fmt.Printf("Single Result: %s\n", result.SingleResult)
+			}
+			if result.Error != "" {
+				fmt.Printf("Error: %s\n", result.Error)
+			}
 		}
 	},
 }
 
 func init() {
 	genSearchCmd.PersistentFlags().IntVarP(&genLimit, "limit", "l", 1, "limit for the search results")
-	genSearchCmd.PersistentFlags().StringVarP(&genPrompt, "prompt", "p", "present the search results in a creative way", "prompt for the generative search results")
+	genSearchCmd.PersistentFlags().StringVarP(&genPrompt, "prompt", "p", "re-write this **{summary}** in a creative way", "prompt for the generative search results")
+	genSearchCmd.PersistentFlags().StringVarP(&genQuery, "query", "q", "", "query for the generative search")
 	rootCmd.AddCommand(genSearchCmd)
 }

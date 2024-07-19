@@ -10,16 +10,21 @@ import (
 )
 
 var limit int
+var query string
 
 var semSearchCmd = &cobra.Command{
 	Use:   "sem-search",
 	Short: "Semantic Search",
 	Long:  `Semantic Search`,
 	Run: func(cmd *cobra.Command, args []string) {
-		query := extractParam(args, 0)
+		// query := extractParam(args, 0)
+		if query == "" {
+			fmt.Println("Please provide a query!")
+			return
+		}
 		openAiApiKey := viper.GetString("openai.apiKey")
 		dbClient := db.NewDBClient(openAiApiKey)
-		results, errs := db.SemSearch(dbClient, *query, limit)
+		results, errs := db.SemSearch(dbClient, query, limit)
 		if errs != nil {
 			jsonErrors, err := json.Marshal(errs)
 			if err != nil {
@@ -36,5 +41,6 @@ var semSearchCmd = &cobra.Command{
 
 func init() {
 	semSearchCmd.PersistentFlags().IntVarP(&limit, "limit", "l", 1, "limit for the search results")
+	semSearchCmd.PersistentFlags().StringVarP(&query, "query", "q", "", "query for the semantic search")
 	rootCmd.AddCommand(semSearchCmd)
 }
