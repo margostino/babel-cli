@@ -13,6 +13,13 @@ func insertData(client *weaviate.Client, metadata []*Metadata) error {
 	var wg sync.WaitGroup
 	errors := make(chan error)
 
+	ready, err := client.Misc().ReadyChecker().Do(context.Background())
+	if err != nil {
+		fmt.Println("Weaviate is NOT ready yet")
+	} else {
+		fmt.Printf("Weaviate is ready: %t\n", ready)
+	}
+
 	for _, item := range metadata {
 		wg.Add(1)
 		go func(item *Metadata) {
