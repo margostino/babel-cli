@@ -35,7 +35,7 @@ var genSearchCmd = &cobra.Command{
 		}
 		for _, result := range results {
 			if result.SingleResult != "" {
-				fmt.Printf("Single Result: %s\n", result.SingleResult)
+				fmt.Printf("%s\n", result.SingleResult)
 			}
 			if result.Error != "" {
 				fmt.Printf("Error: %s\n", result.Error)
