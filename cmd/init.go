@@ -13,7 +13,8 @@ var initCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		repositoryPath := viper.GetString("repository.path")
 		openAiApiKey := viper.GetString("openai.apiKey")
-		dbClient := db.NewDBClient(openAiApiKey)
+		dbPort := viper.GetInt("db.port")
+		dbClient := db.NewDBClient(openAiApiKey, dbPort)
 		err := db.Init(dbClient, repositoryPath)
 		if err != nil {
 			panic(err)

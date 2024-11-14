@@ -24,7 +24,8 @@ var genSearchCmd = &cobra.Command{
 			return
 		}
 		openAiApiKey := viper.GetString("openai.apiKey")
-		dbClient := db.NewDBClient(openAiApiKey)
+		dbPort := viper.GetInt("db.port")
+		dbClient := db.NewDBClient(openAiApiKey, dbPort)
 		results, errs := db.GenSearch(dbClient, genQuery, genPrompt, genLimit)
 		if errs != nil {
 			jsonErrors, err := json.Marshal(errs)
