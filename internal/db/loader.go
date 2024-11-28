@@ -46,7 +46,7 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 			var assetMetadata *Metadata
 			err = json.Unmarshal(fileContent, &assetMetadata)
 			if err != nil {
-				fmt.Printf("Corrupted file %s\n", filePath)
+				fmt.Printf("Corrupted file %s: %s\n", filePath, err)
 				errors <- err
 				return
 			}

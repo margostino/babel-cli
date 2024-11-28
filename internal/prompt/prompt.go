@@ -2,10 +2,14 @@ package prompt
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
 	"github.com/manifoldco/promptui"
+	"github.com/margostino/babel-cli/internal/common"
+	"github.com/margostino/babel-cli/prompts"
+	"gopkg.in/yaml.v2"
 )
 
 func GetInput(pc Prompt) string {
@@ -83,3 +87,24 @@ func GetSelect(pc Prompt, items []string) int {
 // 	// }
 // 	return items
 // }
+
+func GetMetadataEnricher() (string, error) {
+	file, err := prompts.GetEmbeddedPrompt().Open("metadata_enricher.yml")
+	common.Check(err, "Failed to open embedded prompt file")
+
+	defer file.Close()
+
+	content, err := io.ReadAll(file)
+	common.Check(err, "Failed to read embedded prompt file")
+	var data map[string]interface{}
+	err = yaml.Unmarshal(content, &data)
+	common.Check(err, "Failed to unmarshal metadata file")
+
+	prompt, ok := data["prompt"].(string)
+
+	if !ok {
+		return "", fmt.Errorf("Prompt not found in metadata file")
+	}
+
+	return prompt, nil
+}

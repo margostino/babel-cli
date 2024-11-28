@@ -132,7 +132,9 @@ func initMetadata(root string, relativeFilePath string, skipNamesMap map[string]
 	common.Check(err, "Failed to read file content")
 
 	log.Printf("Getting metadata for file %s\n", relativeFilePath)
+
 	metadata, err := openai.GetChatCompletionForMetadata(openAiAPIKey, relativeFilePath, string(content))
+
 	if err != nil {
 		log.Printf("Error getting metadata for file %s: %v\n", relativeFilePath, err)
 		return
@@ -155,8 +157,24 @@ func syncMetadata(root string, relativeFilePath string, skipNamesMap map[string]
 	}
 }
 
+func processTaskResult(taskResultChan <-chan openai.LLMTaskResult, root string) {
+	for task := range taskResultChan {
+		common.Check(task.Error, "Failed to get content from task result")
+		content := task.Content
+		absoluteMetadataFilePath := fmt.Sprintf("%s/metadata/%s.json", root, task.RelativeFilePath)
+
+		var metadataMap map[string]interface{}
+		err := json.Unmarshal([]byte(content), &metadataMap)
+		common.Check(err, "Failed to unmarshal metadata JSON")
+		metadataCollection.Store(task.RelativeFilePath, metadataMap)
+		writePrettyJSONToFile(content, absoluteMetadataFilePath)
+		log.Printf("Metadata written for file %s\n", absoluteMetadataFilePath)
+	}
+}
+
 func walkAndEnrichMetadata(root string, skipNamesMap map[string]struct{}, openAiAPIKey string, fn func(root string, relativeFilePath string, skipNamesMap map[string]struct{}, openAiAPIKey string, wg *sync.WaitGroup)) error {
 	var wg sync.WaitGroup
+
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -181,7 +199,9 @@ func walkAndEnrichMetadata(root string, skipNamesMap map[string]struct{}, openAi
 
 		wg.Add(1)
 		relativeFilePath := common.NewString(path).ReplaceAll(fmt.Sprintf("%s/", root), "").Value()
+
 		go fn(root, relativeFilePath, skipNamesMap, openAiAPIKey, &wg)
+
 		return nil
 	})
 
