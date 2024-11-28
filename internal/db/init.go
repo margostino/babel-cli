@@ -1,24 +1,20 @@
 package db
 
-import "github.com/weaviate/weaviate-go-client/v4/weaviate"
+import (
+	"github.com/margostino/babel-cli/internal/common"
+	"github.com/weaviate/weaviate-go-client/v4/weaviate"
+)
 
-func Init(dbClient *weaviate.Client, repositoryPath string) error {
+func Init(dbClient *weaviate.Client, repositoryPath string) {
 	err := deleteSchema(dbClient)
-	if err != nil {
-		return err
-	}
+	common.CheckPanic(err, "Error deleting schema")
 
 	err = createSchema(dbClient)
-	if err != nil {
-		return err
-	}
+	common.CheckPanic(err, "Error creating schema")
 
 	metadata, err := getMetadata(repositoryPath)
-	if err != nil {
-		return err
-	}
+	common.CheckPanic(err, "Error getting metadata")
 
 	err = insertData(dbClient, metadata)
-
-	return err
+	common.CheckPanic(err, "Error inserting data in new schema")
 }

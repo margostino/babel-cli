@@ -13,6 +13,13 @@ func Check(err error, message string) {
 	}
 }
 
+func CheckPanic(err error, message string) {
+	if err != nil {
+		fmt.Printf("Error: %s - %s\n", err.Error(), message)
+		panic(err)
+	}
+}
+
 //func Check(err error, message string) {
 //	if err != nil {
 //		log.Fatalf("Error: %s - %s\n", err.Error(), message)

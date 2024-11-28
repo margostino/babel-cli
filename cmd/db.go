@@ -15,10 +15,7 @@ var dbInitCmd = &cobra.Command{
 		openAiApiKey := viper.GetString("openai.apiKey")
 		dbPort := viper.GetInt("db.port")
 		dbClient := db.NewDBClient(openAiApiKey, dbPort)
-		err := db.Init(dbClient, repositoryPath)
-		if err != nil {
-			panic(err)
-		}
+		db.Init(dbClient, repositoryPath)
 	},
 }
 
