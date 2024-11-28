@@ -6,10 +6,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-var initCmd = &cobra.Command{
+var dbInitCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialise a new vector collection",
-	Long:  `Initialise a new vector collection`,
+	Short: "Initialise a new vector collection and schema",
+	Long:  `Initialise a new vector collection and schema`,
 	Run: func(cmd *cobra.Command, args []string) {
 		repositoryPath := viper.GetString("repository.path")
 		openAiApiKey := viper.GetString("openai.apiKey")
@@ -22,6 +22,13 @@ var initCmd = &cobra.Command{
 	},
 }
 
+var dbCmd = &cobra.Command{
+	Use:   "db",
+	Short: "Perform actions on database",
+	Long:  "Perform actions on database such as initialise schema",
+}
+
 func init() {
-	rootCmd.AddCommand(initCmd)
+	dbCmd.AddCommand(dbInitCmd)
+	rootCmd.AddCommand(dbCmd)
 }
