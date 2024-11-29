@@ -27,7 +27,7 @@ type Index struct {
 
 func writeIndexFile(root string) {
 	indexData := make(map[string]map[string]interface{})
-	indexFilePath := filepath.Join(root, "metadata", "index.json")
+	indexFilePath := filepath.Join(root, "z-metadata", "index.json")
 	indexFileContent, err := os.ReadFile(indexFilePath)
 	if err != nil && !os.IsNotExist(err) {
 		log.Printf("Failed to read index file: %v\n", err)
@@ -187,7 +187,7 @@ func walkAndEnrichMetadata(root string, skipNamesMap map[string]struct{}, openAi
 		}
 		relativePath, err := filepath.Rel(root, path)
 		common.Check(err, "Failed to get relative path")
-		metadataFilePath := filepath.Join(root, "metadata", relativePath)
+		metadataFilePath := filepath.Join(root, "z-metadata", relativePath)
 		metadataDir := filepath.Dir(metadataFilePath)
 
 		if _, err := os.Stat(metadataDir); os.IsNotExist(err) {
@@ -215,7 +215,7 @@ func walkAndEnrichMetadata(root string, skipNamesMap map[string]struct{}, openAi
 
 func EnrichMetadata(repositoryPath string, openAiAPIKey string) {
 	log.Println(fmt.Sprintf("Initializing metadata..."))
-	skipNames := []string{".git", "metadata", "0-description", "0-babel", "metadata_index"}
+	skipNames := []string{".git", "z-metadata", "0-description", "0-babel", "metadata_index"}
 	skipNamesMap := utils.ListToMap(skipNames)
 
 	if err := walkAndEnrichMetadata(repositoryPath, skipNamesMap, openAiAPIKey, initMetadata); err != nil {
@@ -225,7 +225,7 @@ func EnrichMetadata(repositoryPath string, openAiAPIKey string) {
 
 func SyncMetadata(repositoryPath string, openAiAPIKey string) {
 	log.Println(fmt.Sprintf("Syncing metadata..."))
-	skipNames := []string{".git", "metadata", "0-description", "0-babel", "metadata_index"}
+	skipNames := []string{".git", "z-metadata", "0-description", "0-babel", "metadata_index"}
 	skipNamesMap := utils.ListToMap(skipNames)
 
 	if err := walkAndEnrichMetadata(repositoryPath, skipNamesMap, openAiAPIKey, syncMetadata); err != nil {

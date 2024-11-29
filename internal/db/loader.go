@@ -14,7 +14,7 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
-	metadataPath := filepath.Join(repositoryPath, "metadata")
+	metadataPath := filepath.Join(repositoryPath, "z-metadata")
 
 	err := filepath.Walk(metadataPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {

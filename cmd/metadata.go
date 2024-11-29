@@ -17,7 +17,7 @@ var metadataInitCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		repositoryPath := viper.GetString("repository.path")
 		openAiAPIKey := viper.GetString("openai.apikey")
-		metadataDir := filepath.Join(repositoryPath, "metadata")
+		metadataDir := filepath.Join(repositoryPath, "z-metadata")
 		err := os.RemoveAll(metadataDir)
 		common.SilentCheck(err, "Error deleting metadata when initialising")
 		tools.EnrichMetadata(repositoryPath, openAiAPIKey)
