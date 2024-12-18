@@ -17,6 +17,7 @@ type Asset struct {
 }
 
 type SemanticSearchResult struct {
+	Content  string
 	Category string
 	Path     string
 	Summary  string
@@ -34,4 +35,5 @@ type RawGenerativeSearchResult struct {
 	Category string `json:"category"`
 	Path     string `json:"path"`
 	Summary  string `json:"summary"`
+	Content  string `json:"content"`
 }

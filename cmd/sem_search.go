@@ -11,6 +11,7 @@ import (
 
 var limit int
 var query string
+var includeSemContent bool
 
 var semSearchCmd = &cobra.Command{
 	Use:   "sem-search",
@@ -35,6 +36,9 @@ var semSearchCmd = &cobra.Command{
 		}
 		for _, result := range results {
 			message := fmt.Sprintf("Category: %s\nPath: %s\nSummary: %s\n", result.Category, result.Path, result.Summary)
+			if includeSemContent {
+				message += fmt.Sprintf("\nContent: %s", result.Content)
+			}
 			fmt.Println(message)
 		}
 	},
@@ -43,5 +47,6 @@ var semSearchCmd = &cobra.Command{
 func init() {
 	semSearchCmd.PersistentFlags().IntVarP(&limit, "limit", "l", 1, "limit for the search results")
 	semSearchCmd.PersistentFlags().StringVarP(&query, "query", "q", "", "query for the semantic search")
+	semSearchCmd.PersistentFlags().BoolVarP(&includeSemContent, "with-content", "w", false, "display full content in results")
 	rootCmd.AddCommand(semSearchCmd)
 }

@@ -25,6 +25,7 @@ func GenSearch(dbClient *weaviate.Client, query string, prompt string, limit int
 			graphql.Field{Name: "category"},
 			graphql.Field{Name: "path"},
 			graphql.Field{Name: "summary"},
+			graphql.Field{Name: "content"},
 		).
 		WithGenerativeSearch(generativeSearchPrompt).
 		WithLimit(limit).

@@ -12,6 +12,7 @@ import (
 var genLimit int
 var genPrompt string
 var genQuery string
+var includeGenContent bool
 
 var genSearchCmd = &cobra.Command{
 	Use:   "gen-search",
@@ -49,5 +50,6 @@ func init() {
 	genSearchCmd.PersistentFlags().IntVarP(&genLimit, "limit", "l", 1, "limit for the search results")
 	genSearchCmd.PersistentFlags().StringVarP(&genPrompt, "prompt", "p", "re-write this **{summary}** in a creative way", "prompt for the generative search results")
 	genSearchCmd.PersistentFlags().StringVarP(&genQuery, "query", "q", "", "query for the generative search")
+	genSearchCmd.PersistentFlags().BoolVarP(&includeGenContent, "with-content", "w", false, "display full content in results")
 	rootCmd.AddCommand(genSearchCmd)
 }

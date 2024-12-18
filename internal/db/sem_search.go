@@ -23,6 +23,7 @@ func SemSearch(dbClient *weaviate.Client, query string, limit int) ([]*SemanticS
 			graphql.Field{Name: "category"},
 			graphql.Field{Name: "path"},
 			graphql.Field{Name: "summary"},
+			graphql.Field{Name: "content"},
 		).
 		WithLimit(limit).
 		Do(context.Background())
