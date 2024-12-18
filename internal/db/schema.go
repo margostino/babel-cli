@@ -33,6 +33,10 @@ func createSchema(client *weaviate.Client) error {
 		},
 		Properties: []*models.Property{
 			{
+				Name:     "content",
+				DataType: schema.DataTypeText.PropString(),
+			},
+			{
 				Name:     "category",
 				DataType: schema.DataTypeText.PropString(),
 				// DataType: []string{"Category"},

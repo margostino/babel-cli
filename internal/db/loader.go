@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
+
+	"github.com/margostino/babel-cli/internal/common"
 )
 
-func getMetadata(repositoryPath string) ([]*Metadata, error) {
+func getAssetsWithMetadata(repositoryPath string) ([]*Asset, error) {
 	var jsonFiles []string
-	var allMetadata []*Metadata
+	var allAssets []*Asset
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
@@ -20,7 +23,7 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 		if err != nil {
 			return err
 		}
-		if !info.IsDir() && filepath.Ext(path) == ".json" {
+		if !info.IsDir() && filepath.Ext(path) == ".json" && !strings.HasSuffix(path, "index.json") {
 			jsonFiles = append(jsonFiles, path)
 		}
 		return nil
@@ -30,7 +33,7 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 		return nil, err
 	}
 
-	results := make(chan *Metadata)
+	results := make(chan *Asset)
 	errors := make(chan error)
 
 	for _, jsonFile := range jsonFiles {
@@ -50,7 +53,19 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 				errors <- err
 				return
 			}
-			results <- assetMetadata
+			assetPath := common.NewString(filePath).ExtractPrefixUntil("/z-metadata/")
+			assetContent, err := os.ReadFile(fmt.Sprintf("%s/%s", assetPath, assetMetadata.Path))
+			if err != nil {
+				errors <- err
+				return
+			}
+
+			asset := &Asset{
+				Content:  string(assetContent),
+				Metadata: *assetMetadata,
+			}
+
+			results <- asset
 		}(jsonFile)
 
 	}
@@ -70,7 +85,7 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 				results = nil
 			} else {
 				mu.Lock()
-				allMetadata = append(allMetadata, result)
+				allAssets = append(allAssets, result)
 				mu.Unlock()
 			}
 		case err := <-errors:
@@ -87,5 +102,5 @@ func getMetadata(repositoryPath string) ([]*Metadata, error) {
 		return nil, firstError
 	}
 
-	return allMetadata, nil
+	return allAssets, nil
 }

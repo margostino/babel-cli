@@ -9,7 +9,7 @@ import (
 	"github.com/weaviate/weaviate/entities/models"
 )
 
-func insertData(client *weaviate.Client, metadata []*Metadata) error {
+func insertData(client *weaviate.Client, assets []*Asset) error {
 	var wg sync.WaitGroup
 	errors := make(chan error)
 
@@ -20,23 +20,24 @@ func insertData(client *weaviate.Client, metadata []*Metadata) error {
 		fmt.Printf("Weaviate is ready: %t\n", ready)
 	}
 
-	for _, item := range metadata {
+	for _, item := range assets {
 		wg.Add(1)
-		go func(item *Metadata) {
+		go func(item *Asset) {
 			defer wg.Done()
 			resp, err := client.Batch().ObjectsBatcher().
 				WithObjects(
 					&models.Object{
 						Class: "babel",
 						Properties: map[string]interface{}{
-							"category":      item.Category,
-							"highlights":    item.Highlights,
-							"keywords":      item.Keywords,
-							"path":          item.Path,
-							"references":    item.References,
-							"related_links": item.RelatedLinks,
-							"summary":       item.Summary,
-							"tags":          item.Tags,
+							"content":       item.Content,
+							"category":      item.Metadata.Category,
+							"highlights":    item.Metadata.Highlights,
+							"keywords":      item.Metadata.Keywords,
+							"path":          item.Metadata.Path,
+							"references":    item.Metadata.References,
+							"related_links": item.Metadata.RelatedLinks,
+							"summary":       item.Metadata.Summary,
+							"tags":          item.Metadata.Tags,
 						},
 					},
 				).

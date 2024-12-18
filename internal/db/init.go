@@ -12,9 +12,9 @@ func Init(dbClient *weaviate.Client, repositoryPath string) {
 	err = createSchema(dbClient)
 	common.CheckPanic(err, "Error creating schema")
 
-	metadata, err := getMetadata(repositoryPath)
-	common.CheckPanic(err, "Error getting metadata")
+	assets, err := getAssetsWithMetadata(repositoryPath)
+	common.CheckPanic(err, "Error getting assets")
 
-	err = insertData(dbClient, metadata)
+	err = insertData(dbClient, assets)
 	common.CheckPanic(err, "Error inserting data in new schema")
 }

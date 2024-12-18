@@ -25,6 +25,14 @@ func (s *String) ToLower() *String {
 	return s
 }
 
+func (s *String) ExtractPrefixUntil(subPath string) string {
+	parts := strings.Split(s.value, subPath)
+	if len(parts) > 0 {
+		return parts[0]
+	}
+	return ""
+}
+
 func (s *String) ReplaceAll(old string, new string) *String {
 	s.value = strings.ReplaceAll(s.value, old, new)
 	return s

@@ -11,6 +11,11 @@ type Metadata struct {
 	Tags         []string `json:"tags"`
 }
 
+type Asset struct {
+	Content  string
+	Metadata Metadata
+}
+
 type SemanticSearchResult struct {
 	Category string
 	Path     string
